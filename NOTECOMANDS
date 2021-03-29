@@ -1,0 +1,59 @@
+ php artisan make:auth
+ creara en web.php 
+
+ npm run watch
+
+New model: in database
+ php artisan make:model Category -mr
+
+ When update some model:
+ php artisan migrate
+
+new seeder
+ php artisan make:seeder CategoriesTableSeeder
+
+ Change in CategoriesTableSeeder.php and then run
+ php artisan db:seed  
+
+DAtabase and update records on the command line
+ php artisan tinker
+
+EXAMPLE, make user admin
+ $ php artisan tinker
+Psy Shell v0.9.12 (PHP 7.1.32 — cli) by Justin Hileman
+>>> $user = user::fins(1);
+PHP Fatal error:  Class 'user' not found in Psy Shell code on 
+line 1
+>>> $user = User::find(1);
+[!] Aliasing 'User' to 'App\User' for this Tinker session.    
+=> App\User {#3203
+     id: 1,
+     name: "Ana",
+     email: "marquez.ana@uabc.edu.mx",
+     email_verified_at: null,
+     is_admin: 0,
+     created_at: "2021-03-28 20:23:15",
+     updated_at: "2021-03-28 20:32:17",
+   }
+>>> $user->is_admin = true;
+=> true
+>>> $user->save();
+=> true
+>>>
+
+
+
+//LARAVEL/PASSPORT -> WEB API WITH TOKEN AUTHORIZATION 
+composer require laravel/passport / composer update laravel/passport:9.0.1
+
+Fix problem out of memory
+:
+https://stackoverflow.com/questions/63641895/composer-require-runs-out-of-memory-php-fatal-error-allowed-memory-size-of-161
+
+
+then 
+php artisan migrate
+
+then
+php artisan passport:install
+
