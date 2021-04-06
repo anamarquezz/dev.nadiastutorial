@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use PDO;
 
 class CategoryController extends Controller
 {
@@ -22,16 +23,17 @@ class CategoryController extends Controller
     }
 
     public function upsert(Request $request){
-        $this->authorize('manage','App\category');
-        $categories = $request->post('çategories');
-        foreach ($categories as $cat){
+        $this->authorize('manage','App\Category');
+        $categories = $request->post('categories');
+        foreach( $categories as $cat){
             if($cat['id']){
-                Category::where('id',$cat['id'])->update($cat);
+                Category::where('id', $cat['id'])->update($cat);
             }else{
                 Category::create($cat);
             }
         }
-    }
+        return ['sucess' => true, 'categories' => Category::all()];
+    }   
 
     /**
      * Show the form for creating a new resource.
@@ -55,14 +57,17 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the Items in the category
      *
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function items(Category $category)
     {
         //
+        return $category->menuItems->map( function ($item){
+            return $item->only(['id'],'name');
+        });
     }
 
     /**
@@ -96,6 +101,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $this->authorize('delete', $category);
+        $category->delete();
+        return ['sucecess'=> true];
     }
 }

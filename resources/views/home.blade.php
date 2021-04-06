@@ -10,13 +10,13 @@
     Our outdoor garden area is perfect for a stroll before or after your meal. We invite you to come dine
     with us!
 </p>
-<img src="{{asset('images/patio.jpg') }}"  class="home">
+<img  src="{{asset('images/patio.jpg') }}"  class="home">
 <div class="menu-categories">
 
     @foreach ($categories as $cat) 
         <article>
             <a href="/menu#{{ str_slug($cat->name)}}"><img src="{{asset('/images/'.$cat->image) }} " ></a>
-            <h2><a href="/menu#{{ str_slug($cat->name)}}">Starters</a></h2>
+            <h2><a href="/menu#{{ str_slug($cat->name)}}">{{$cat->name}}</a></h2>
         </article>
     @endforeach
 

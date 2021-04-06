@@ -11,14 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' => true]);
-
-//Route::get('/', 'HomeController@index')->name('home')->middleware('verified');
 
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/categories', 'CategoryController@index');
+
+Route::get('/menu-editor/{any?}', 'adminController@menu')
+->middleware('can:edit-menu')
+->where('any','.*');

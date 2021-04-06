@@ -16,10 +16,12 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
 
 Vue.component('category-manager', require('./components/CategoryManager.vue').default);
+Vue.component('menu-editor', require('./components/MenuEditor.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27,6 +29,11 @@ Vue.component('category-manager', require('./components/CategoryManager.vue').de
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
+
+
 const app = new Vue({
     el: '#app',
+    
 });
+Vue.config.devtools = true
