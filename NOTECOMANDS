@@ -57,3 +57,6 @@ php artisan migrate
 then
 php artisan passport:install
 
+
+
+php artisan route:clear

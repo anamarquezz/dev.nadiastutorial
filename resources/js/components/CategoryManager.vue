@@ -1,47 +1,40 @@
 <template>
-  
-
-    <form @submit.prevent="saveCategories" class="formcategory">    
+    <form @submit.prevent="saveCategories">    
         <a @click="addCategory" class="add">+ Add Category</a>    
         <div v-for="(category, index) in categories" :key="category.id">
-            <input type="text" v-model="category.name" :ref="category.name">
-            <input type="number" v-model="category.display_order">
+            <input type="text" :value="category.name" @input="update($event,'name', index)" :ref="category.name">
+            <input type="number" :value="category.display_order" @input="update($event,'display_order', index)">
             <a @click="removeCategory(index)" class="remove">delete</a>
             <div>
                 <img v-if="category.image" :src="`/images/${category.image}`" width="100">
-                     <!--img v-if="category.image" :src="`../public/images/${category.image}`" width="100"-->
                 <label v-else>Image: </label>
-                <input type="text" v-model.lazy="category.image">
+                <input type="text" :value="category.image" @change="update($event,'image', index)">
             </div>
             <hr>
         </div>
         <button type="submit">Save</button>
         <div>{{ feedback }}</div>
     </form>
-    </div>
 </template>
 
 <script>
-    export default {
-        props: ['initialCategories'],
-        data() {
-            return {
-                categories: _.cloneDeep(this.initialCategories),
-                feedback: ''
-            };
+    export default {                
+        computed: {
+            categories() {
+                return this.$store.state.categories;
+            },
+            feedback(){
+                return this.$store.state.feedback;
+            }
         },
         methods: {
             removeCategory(index) {
-                if (confirm('Are you sure?')) {
-                    let id = this.categories[index].id;
-                    if (id > 0) {
-                        axios.delete('/api/categories/' + id);
-                    }
-                    this.categories.splice(index, 1);
+                if (confirm('Are you sure?')) { 
+                    this.$store.dispatch('removeCategory', index)                  
                 }
             },
             addCategory() {
-                this.categories.push({
+                this.$store.commit('ADD_CATEGORY',{
                     id: 0,
                     name: '',
                     image: '',
@@ -53,14 +46,14 @@
                 });
             },
             saveCategories() {
-                axios.post('/api/categories/upsert', {
-                    categories: this.categories
-                })
-                .then((res) => {
-                    if (res.data.success) {
-                        this.feedback = 'Changes saved.';
-                        this.categories = res.data.categories;
-                    }
+                this.$store.dispatch('saveCategories');
+
+            },
+            update($event, property, index){
+                this.$store.commit('UPDATE_CATEGORY',{
+                    index,
+                    property,
+                    value: $event.target.value
                 });
             }
         }
@@ -74,6 +67,4 @@
     img {
         vertical-align: middle;
     }
-
-    
 </style>

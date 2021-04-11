@@ -7,14 +7,11 @@ use App\Category;
 
 class AdminController extends Controller
 {
-    //
-
-    public function menu(){
-
+    public function menu()
+    {
         $categories = Category::orderBy('display_order')->get();
-        return view('admin.menu-editor',[
+        return view('admin.menu-editor', [
             'categories' => $categories
         ]);
     }
 }
-
